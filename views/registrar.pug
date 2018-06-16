@@ -1,0 +1,17 @@
+html
+    head
+        title resgistro
+    body
+        h1 Registrate xD
+        form(action="/crear/" method="POST")
+            div
+                label usuario:
+                input(type="text" name="user" )
+            div
+                label email:
+                input(type="text" name="email" )
+            div
+                label contraseña:
+                input(type="text" name="pass" )
+            button crear
+            a(href='/') cancelar
