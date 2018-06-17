@@ -1,29 +1,50 @@
 const conn = require("../conexion.js");
-
-const index = (req,res,next)=> {
-    res.render('index')
+const bodyParser=require('body-parser');
+const passport=require('passport');
+var isAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+        res.redirect('/');
+}
+//get login page
+const index = (req,res)=> {
+    res.render('index',{ message: req.flash('message') })
 }
 const login = (req,res,next)=> { 
     res.render('logeo') }
 
-const registro=(req,res,next)=>{
-    res.render('registrar')
-}
+const logeado = (req,res,next) => {passport.authenticate('login', {
+    successRedirect: '/home',
+    failureRedirect: '/',
+    failureFlash : true  
+})}
 
-const newuser = (req, res,next) => {
+const registro=(req,res,next) => {
+    res.render('registrar',{message: req.flash('message')})
+}
+const home= (isAuthenticated, function(req, res){
+    res.render('home', { user: req.user });
+})
+
+const newuser = (req,res,next) => {passport.authenticate('index', {
+    successRedirect: '/home',
+    failureRedirect: '/crear',
+    failureFlash : true  
+})
 	const db = conn.get();
 
-	const user = req.body.user;
+	const username = req.body.username;
 	const email = req.body.email;
-	const pass = req.body.pass;
-	
-	db.collection("usuarios").insertOne({user:user,email:email,pass:pass});
+	const password = req.body.password;
+	//console.log(req.body)
+	db.collection("usuarios").insertOne({username:username,email:email,password:password});
 	res.redirect('/');
 };
 
 module.exports = {
     index,
     login,
+    logeado,
     registro,
     newuser
 }

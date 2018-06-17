@@ -6,12 +6,12 @@ html
         form(action="/crear/" method="POST")
             div
                 label usuario:
-                input(type="text" name="user" )
+                input(type="text" name="username")
             div
                 label email:
-                input(type="text" name="email" )
+                input(type="email" name="email")
             div
                 label contraseña:
-                input(type="text" name="pass" )
+                input(type="password" name="password")
             button crear
             a(href='/') cancelar
